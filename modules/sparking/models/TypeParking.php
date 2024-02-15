@@ -42,8 +42,8 @@ class TypeParking extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'prices' => 'Prices',
+            'name' => 'Nombre',
+            'prices' => 'Cobros',
         ];
     }
 

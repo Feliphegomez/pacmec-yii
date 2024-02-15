@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
             // 'class' => 'p-4 p-md-4 border rounded-3 bg-body-tertiary',
         ],
     ]); ?>
-    <div class="row">
+    <div class="row p-3">
         <div class="col-md-6">
             <?= $form->field($model, 'id') ?>
         </div>
