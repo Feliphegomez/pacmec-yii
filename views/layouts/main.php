@@ -102,31 +102,33 @@ NavBar::end();
     </div>
 
     <?php 
-        NavBar::begin([
-            // 'brandLabel' => Yii::$app->name,
-            // 'brandUrl' => Yii::$app->homeUrl,
-            'options' => ['class' => 'navbar navbar-expand-sm navbar-dark bg-dark'],
-            'innerContainerOptions' => ['class' => 'container-fluid'],
-            'brandOptions' => ['class' => 'bi me-2'],
-        ]);
-            echo Nav::widget([
-                'options' => ['class' => 'navbar-nav me-auto mb-2 mb-sm-0'],
-                'items' => Yii::$app->params['menus']['top_secondary'],
-                'encodeLabels' => false,
+        if (!empty(Yii::$app->params['menus']['top_secondary'])) {
+            NavBar::begin([
+                // 'brandLabel' => Yii::$app->name,
+                // 'brandUrl' => Yii::$app->homeUrl,
+                'options' => ['class' => 'navbar navbar-expand-sm navbar-dark bg-dark'],
+                'innerContainerOptions' => ['class' => 'container'],
+                'brandOptions' => ['class' => 'bi me-2'],
             ]);
-            
-            if (Yii::$app->user->isGuest) {
-                echo '<div class="text-end">';
-                    echo '<a href="'.Url::toRoute(['/site/login']).'" class="btn btn-light text-dark me-2">Ingresar</a>';
-                    echo '<a href="'.Url::toRoute(['/site/signup']).'" class="btn btn-primary">Registrarte</a>';
-                echo '</div>';
-            } else {
-                // echo '<form role="search">
-                //     <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                // </form>';
-            }
-
-        NavBar::end();
+                echo Nav::widget([
+                    'options' => ['class' => 'navbar-nav me-auto mb-2 mb-sm-0'],
+                    'items' => Yii::$app->params['menus']['top_secondary'],
+                    'encodeLabels' => false,
+                ]);
+                
+                if (Yii::$app->user->isGuest) {
+                    echo '<div class="text-end">';
+                        echo '<a href="'.Url::toRoute(['/site/login']).'" class="btn btn-light text-dark me-2">Ingresar</a>';
+                        echo '<a href="'.Url::toRoute(['/site/signup']).'" class="btn btn-primary">Registrarte</a>';
+                    echo '</div>';
+                } else {
+                    // echo '<form role="search">
+                    //     <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    // </form>';
+                }
+    
+            NavBar::end();
+        }
     ?>
 </header>
 
