@@ -121,9 +121,9 @@ NavBar::end();
                     echo '<a href="'.Url::toRoute(['/site/signup']).'" class="btn btn-primary">Registrarte</a>';
                 echo '</div>';
             } else {
-                echo '<form role="search">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                </form>';
+                // echo '<form role="search">
+                //     <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                // </form>';
             }
 
         NavBar::end();

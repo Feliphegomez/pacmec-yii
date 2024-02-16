@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3 text-center">Salida de Vehículo</h1>
             <?php if (empty($model)) : ?>
                 <p class="text-center fs-4">Utilice el buscador para los encontrar el vejículo, la informacion se visualizara despues de esto.</p>
-                <?= $this->render('/movements/_search', [
+                <?= $this->render('/movement/_search-min', [
                     'model' => $searchModel,
                 ]) ?>
             <?php else : ?>

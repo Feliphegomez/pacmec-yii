@@ -2,18 +2,17 @@
 
 namespace app\modules\sparking\controllers;
 
-use app\modules\sparking\models\Movement;
 use app\modules\sparking\models\Menus;
-use app\modules\sparking\models\MovementSearch;
-use yii\data\ActiveDataProvider;
+use app\modules\sparking\models\Plan;
+use app\modules\sparking\models\PlanSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MovementController implements the CRUD actions for Movement model.
+ * PlanController implements the CRUD actions for Plan model.
  */
-class MovementController extends Controller
+class PlanController extends Controller
 {
     /**
      * @inheritDoc
@@ -33,41 +32,30 @@ class MovementController extends Controller
         );
     }
 
-    public function __construct($id, $module, $config)
+    public function __construct($id, $module, $config = [])
     {
-        parent::__construct($id, $module, $config ?? []);
-        
+        parent::__construct($id, $module, $config);
         Menus::addMenuParking();
     }
 
     /**
-     * Lists all Movement models.
+     * Lists all Plan models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new MovementSearch();
-        $dataProvider = new ActiveDataProvider([
-            'query' => Movement::find(),
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-        ]);
+        $searchModel = new PlanSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Movement model.
+     * Displays a single Plan model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -80,13 +68,13 @@ class MovementController extends Controller
     }
 
     /**
-     * Creates a new Movement model.
+     * Creates a new Plan model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Movement();
+        $model = new Plan();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -102,7 +90,7 @@ class MovementController extends Controller
     }
 
     /**
-     * Updates an existing Movement model.
+     * Updates an existing Plan model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -122,7 +110,7 @@ class MovementController extends Controller
     }
 
     /**
-     * Deletes an existing Movement model.
+     * Deletes an existing Plan model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -136,15 +124,15 @@ class MovementController extends Controller
     }
 
     /**
-     * Finds the Movement model based on its primary key value.
+     * Finds the Plan model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Movement the loaded model
+     * @return Plan the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Movement::findOne(['id' => $id])) !== null) {
+        if (($model = Plan::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

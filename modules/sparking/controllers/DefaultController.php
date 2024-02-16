@@ -11,11 +11,15 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\SignupForm;
 use app\models\ContactForm;
-use app\modules\sparking\models\Movements;
+use app\modules\sparking\models\Movement;
 use app\modules\sparking\models\MovementsSearch;
 use app\modules\sparking\models\Membership;
 use app\modules\sparking\models\Plans;
 use app\modules\sparking\models\Menus;
+use app\modules\sparking\models\MovementSearch;
+use app\modules\sparking\models\Plan;
+use app\modules\sparking\models\PlanSearch;
+use Exception;
 use yii\data\ActiveDataProvider;
 
 class DefaultController extends Controller
@@ -28,31 +32,11 @@ class DefaultController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['login', 'logout', 'signup', 'ingreso-vehiculo'],
+                'only' => ['index', 'activity', 'ingreso-vehiculo', 'salida-vehiculo', 'producto-caja', 'base-caja', 'ingreso-plan', 'reporte-dia', 'reporte-semana', 'reporte-mes', 'reporte-usuario'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['login', 'signup'],
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['logout'],
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['ingreso-vehiculo'],
-                        'roles' => ['createTicket'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['salida-vehiculo'],
-                        'roles' => ['updateTicket'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['reporte-usuario'],
+                        'actions' => ['index', 'activity', 'reporte-usuario', 'base-caja', 'producto-caja', 'ingreso-vehiculo', 'salida-vehiculo', 'ingreso-plan'],
                         'roles' => ['cashier'],
                     ],
                     [
@@ -62,8 +46,9 @@ class DefaultController extends Controller
                     ],
                 ],
                 'denyCallback' => function ($rule, $action) {
-                    // throw new \Exception('No tienes los suficientes permisos para acceder a esta página');
-                    exit('No tienes los suficientes permisos para acceder a esta página');
+                    // $this->redirect(['/site/error'], 403);
+                    throw new NotFoundHttpException('No tienes los suficientes permisos para acceder a esta página.', 403);
+                    // exit("No tienes los suficientes permisos para acceder a esta página.");
                 }
             ],
             'verbs' => [
@@ -94,7 +79,6 @@ class DefaultController extends Controller
     public function __construct($id, $module, $config)
     {
         parent::__construct($id, $module, $config ?? []);
-        
         Menus::addMenuParking();
     }
 
@@ -127,14 +111,14 @@ class DefaultController extends Controller
 
     public function actionIngresoVehiculo($addId=null)
     {
-        $model = new Movements();
+        $model = new Movement();
         $model->check_in = date('Y-m-d H:i:s');
         $model->check_in_user_id = Yii::$app->user->identity->id;
         Yii::$app->session->removeFlash('existPlanE');
         
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                $query = Movements::find();
+                $query = Movement::find();
                 $query->andFilterWhere([
                     'plate' => $model->plate,
                     'type_id' => $model->type_id,
@@ -146,7 +130,7 @@ class DefaultController extends Controller
                 ]);
                 if (count($dataProvider->models) > 0) {
                     Yii::$app->session->setFlash('existVehicle');
-                    // $model = new Movements();
+                    // $model = new Movement();
 
                     // echo json_encode($dataProvider->models[0]->id);
                 } else {
@@ -174,7 +158,9 @@ class DefaultController extends Controller
 
     public function actionSalidaVehiculo($id=null, $outId=null)
     {
-        $searchModel = new MovementsSearch();
+        $searchModel = new MovementSearch([
+            'is_open' => 1,
+        ]);
         $dataProvider = $searchModel->searchNull($this->request->queryParams);
         // $dataProvider = $searchModel->search([
         //     // 'MovementsSearch' => ['check_out_user_id' => 0]
@@ -187,7 +173,7 @@ class DefaultController extends Controller
         $payment_time = json_decode('{"d": 0,"f": 0,"h": 0,"i": 0,"m": 0,"s": 0,"y": 0}');
 
         if ($id) {
-            if (($model = Movements::findOne(['id' => $id])) !== null) {
+            if (($model = Movement::findOne(['id' => $id])) !== null) {
                 $model->check_out = date('Y-m-d H:i:s');
                 $model->check_out_user_id = Yii::$app->user->identity->id;
         
@@ -252,7 +238,7 @@ class DefaultController extends Controller
                     + $payment_time->y * $model->type->prices['y']['price'];
 
                     // Is Plan
-                    $query = Plans::find();
+                    $query = Plan::find();
                     $query->andFilterWhere([
                         'plate' => $model->plate,
                         'type_id' => $model->type_id,
@@ -298,48 +284,29 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function actionReporteUsuario() 
+    public function actionReporte() 
     {
-		
-        $searchModel = new MovementsSearch();
-        // $dataProvider = $searchModel->searchPays($this->request->queryParams);
-        $dataProvider = $searchModel->searchPays([
-			'MovementsSearch' => [
-                'check_out_user_id' => Yii::$app->user->identity->id,
-                'check_out' => date('Y-m-d 00:00:00'),
-                'check_out_hasta' => date('Y-m-d 23:59:59'),
-            ],
-			// 'sort' => array(
-				// 'defaultOrder' => 'id',
-				// 'attributes' => array(
-					// 'MovementsSearch' => array(
-						// 'asc' => 'post_count ASC',
-					// ),
-					// '*',
-				// ),
-			// ),
-		]);
-		$dataProvider->pagination->pageSize = 1000;
-		$dataProvider->sort->defaultOrder = ['id' => SORT_DESC];
-		// $dataProvider->sort->defaultOrder = ['check_out' => SORT_DESC];
+        $searchModel = new MovementSearch();
+        
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('reporte', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'searchFormEnable' => true,
         ]);
-		
-        $searchModel = new MovementsSearch();
-        $dataProvider = $searchModel->searchPays([
-				'pagination' => [
-					'pagesize' => 50
-				],
-            'MovementsSearch' => [
-                'check_out_user_id' => Yii::$app->user->identity->id,
-                'check_out' => date('Y-m-d 00:00:00'),
-                'check_out_hasta' => date('Y-m-d 23:59:59'),
-            ]
+    }
+
+    public function actionReporteUsuario() 
+    {
+        $searchModel = new MovementSearch([
+            'check_out_user_id' => Yii::$app->user->identity->id,
+            'check_out_desde' => date('Y-m-d 00:00:00'),
+            'check_out_hasta' => date('Y-m-d 23:59:59'),
         ]);
-        
+
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
         return $this->render('reporte', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -348,27 +315,25 @@ class DefaultController extends Controller
 
     public function actionReporteDia() 
     {
-        $query = Movements::find();
-        $fechaInicio = (date('Y-m-d 00:00:00'));
-        $fechaFin = (date('Y-m-d 23:59:59'));
-        $query->andFilterWhere(['between', 'check_out', $fechaInicio, $fechaFin]);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+        $searchModel = new MovementSearch([
+            // 'check_out_user_id' => Yii::$app->user->identity->id,
+            'check_out_desde' => date('Y-m-d 00:00:00'),
+            'check_out_hasta' => date('Y-m-d 23:59:59'),
         ]);
 
-		$dataProvider->pagination->pageSize = 1000;
-		$dataProvider->sort->defaultOrder = ['id' => SORT_DESC];
-		
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
         return $this->render('reporte', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+        ]);        
     }
 
     public function actionReporteSemana() 
     {
         $diaSemana = date("w");
         # Calcular el tiempo (no la fecha) de cuándo fue el inicio de semana
-        $tiempoDeInicioDeSemana = strtotime("-" . $diaSemana . " days"); # Restamos -X days
+        $tiempoDeInicioDeSemana = strtotime("-" . ($diaSemana-1) . " days"); # Restamos -X days
         # Y formateamos ese tiempo
         $fechaInicioSemana = date("Y-m-d 00:00:00", $tiempoDeInicioDeSemana);
         # Ahora para el fin, sumamos
@@ -376,11 +341,26 @@ class DefaultController extends Controller
         # Y formateamos
         $fechaFinSemana = date("Y-m-d 23:59:59", $tiempoDeFinDeSemana);
         
+        $searchModel = new MovementSearch([
+            // 'check_out_user_id' => Yii::$app->user->identity->id,
+            'check_out_desde' => $fechaInicioSemana,
+            'check_out_hasta' => $fechaFinSemana,
+        ]);
+
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('reporte', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+
+
+        $searchModel = new MovementSearch();
+        
         $searchModel = new MovementsSearch();
         $dataProvider = $searchModel->searchPays([
             'MovementsSearch' => [
-                'check_out' => $fechaInicioSemana,
-                'check_out_hasta' => $fechaFinSemana,
             ]
         ]);
 		$dataProvider->pagination->pageSize = 10000;
@@ -393,6 +373,23 @@ class DefaultController extends Controller
 
     public function actionReporteMes() 
     {
+        $searchModel = new MovementSearch([
+            // 'check_out_user_id' => Yii::$app->user->identity->id,
+            'check_out_desde' => date("Y-m-01 00:00:00"),
+            'check_out_hasta' => date("Y-m-t 23:59:59"),
+        ]);
+
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('reporte', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+
+
+
+        $searchModel = new MovementSearch();
         $diaSemana = date("w");
         # Calcular el tiempo (no la fecha) de cuándo fue el inicio de semana
         $tiempoDeInicioDeSemana = strtotime("-" . $diaSemana . " days"); # Restamos -X days
@@ -425,7 +422,7 @@ class DefaultController extends Controller
     {
         $this->layout = 'empty';
 
-        if (($model = Movements::findOne(['id' => $id])) !== null) {
+        if (($model = Movement::findOne(['id' => $id])) !== null) {
             return $this->render('ticket', [
                 'outId' => $id,
                 'model' => $model,
@@ -437,7 +434,7 @@ class DefaultController extends Controller
     public function actionTicketOut($id) 
     {
         $this->layout = 'empty';
-        if (($model = Movements::findOne(['id' => $id])) !== null) {
+        if (($model = Movement::findOne(['id' => $id])) !== null) {
             return $this->render('voucher', [
                 'outId' => $id,
                 'model' => $model,
@@ -452,13 +449,13 @@ class DefaultController extends Controller
      * @return string|\yii\web\Response
      */
     public function actionIngresoPlan($search_id=null, $addId=null) {
-        $model = new Plans();
+        $model = new Plan();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
                 if (!empty($model->plate)) {
                     // $model->plate;
-                    $query = Plans::find();
+                    $query = Plan::find();
                     $query->andFilterWhere([
                         'plate' => $model->plate,
                         'type_id' => $model->type_id,
@@ -471,7 +468,7 @@ class DefaultController extends Controller
                     ]);
                     if (count($dataProvider->models) > 0) {
                         Yii::$app->session->setFlash('existPlan');
-                        $model = new Plans();
+                        $model = new Plan();
                     }
                     else {
                         if ($model->save()) {
@@ -479,7 +476,7 @@ class DefaultController extends Controller
                             // return $this->redirect(['view', 'id' => $model->id]);
                             
                             // Agregar movimiento
-                            $model_movement = new Movements();
+                            $model_movement = new Movement();
                             $model_movement->plate = "Membresia '{$model->membership->name}' para vehiculo '{$model->plate}'";
                             $model_movement->type_id = $model->type_id;
                             $model_movement->check_in = date('Y-m-d H:i:s');
@@ -512,7 +509,7 @@ class DefaultController extends Controller
 
     public function actionBaseCaja($addId=null) 
     {
-        $model = new Movements();
+        $model = new Movement();
         $model->plate = "Inicio de caja de '".Yii::$app->user->identity->username."', fecha y hora " . date('Y-m-d H:i:s');
         $model->type_id = 1;
         $model->check_in = date('Y-m-d 00:00:00');
@@ -548,7 +545,7 @@ class DefaultController extends Controller
                 "price" => 1000,
             ]
         ];
-        $model = new Movements();
+        $model = new Movement();
         $model->type_id = 1;
         $model->check_in = date('Y-m-d h:i:00');
         $model->check_in_user_id = Yii::$app->user->identity->id;
@@ -599,6 +596,47 @@ class DefaultController extends Controller
         ]);
 
         return $this->render('/membership/index', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lists all Movement models.
+     *
+     * @return string
+     */
+    public function actionActivity()
+    {
+        $searchModel = new MovementSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+		$dataProvider->pagination->pageSize = 5;
+		$dataProvider->sort->defaultOrder = ['id' => SORT_DESC];
+
+        return $this->render('activity', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionTicketDetails($id) {
+        if (($model = Movement::findOne(['id' => $id])) !== null) {
+            return $this->render('ticket-details', [
+                'model' => $model,
+            ]);
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+        
+    }
+
+    public function actionMembers() {
+        $searchModel = new PlanSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+		$dataProvider->pagination->pageSize = 5;
+		$dataProvider->sort->defaultOrder = ['id' => SORT_DESC];
+
+        return $this->render('members', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }

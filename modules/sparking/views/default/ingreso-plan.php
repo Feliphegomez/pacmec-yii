@@ -4,10 +4,11 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /** @var yii\web\View $this */
-/** @var app\models\Movements $model */
+/** @var app\models\Movement $model */
 
 $this->title = 'Ingreso plan de vehiculo';
 $this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default']];
+$this->params['breadcrumbs'][] = ['label' => 'Miembros', 'url' => ['/sparking/members']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container">
@@ -23,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             </p>
         <?php endif ?>
-        <?= $this->render('/plans/_form', [
+        <?= $this->render('/plan/_form-min', [
             'model' => $model,
         ]) ?>
     </div>

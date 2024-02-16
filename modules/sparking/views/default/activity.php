@@ -1,23 +1,22 @@
 <?php
 
-use app\modules\sparking\models\Movement;
 use app\modules\sparking\models\TypeParking;
 use app\modules\sparking\helpers\Badge;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
 // use yii\grid\GridView;
 use kartik\export\ExportMenu;
 
 // on your view layout file
 use kartik\icons\FontAwesomeAsset;
+
 FontAwesomeAsset::register($this);
 
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Movimientos - Admin';
-$this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default']];
+$this->title = 'Actividad';
+$this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="movement-index">
@@ -25,11 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1><?= Html::encode($this->title) ?></h1>
         <p>
             <?php 
-                if (Yii::$app->user->can('admin')) {
-                    echo Html::a('Crear actividad', ['/sparking/movement/create'], ['class' => 'btn btn-success']);
-                }
                 if (Yii::$app->user->can('cashier')) {
-                    echo Html::a('Ingreso normal', ['/sparking/default/ingreso-vehiculo'], ['class' => 'btn btn-success']);
+                    echo Html::a('Registrar Ingreso', ['/sparking/default/ingreso-vehiculo'], ['class' => 'btn btn-success']);
                 }
             ?>
         </p>
@@ -95,11 +91,30 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     // 'value'=>Yii::$app->numberFormatter->formatCurrency(, "COP"),
                 ],
+                // [
+                //     'class' => ActionColumn::className(),
+                //     'urlCreator' => function ($action, Movement $model, $key, $index, $column) {
+                //         return Url::toRoute(["/sparking/movement/{$action}", 'id' => $model->id]);
+                //     }
+                // ],
                 [
-                    'class' => ActionColumn::className(),
-                    'urlCreator' => function ($action, Movement $model, $key, $index, $column) {
-                        return Url::toRoute(["/sparking/movement/{$action}", 'id' => $model->id]);
-                    }
+                    'class' => 'yii\grid\ActionColumn',
+                    // 'template' => '{view} {update} {delete} {myButtonView}',  // the default buttons + your custom button
+                    'template' => Yii::$app->user->can('admin') ? '{myButtonView} {myButtonOuting} {myButtonPrintVoucher} {myButtonPrintTicket}' : '',
+                    'buttons' => [
+                        'myButtonView' => function($url, $model, $key) {     // render your custom button
+                            return Html::a('Detalles', Url::toRoute(['/sparking/default/ticket-details', 'id' => $model->id]), ['class'=>'btn btn-primary btn-sm']);
+                        },
+                        'myButtonPrintTicket' => function($url, $model, $key) {     // render your custom button
+                            return Html::a('Ticket Entrada', Url::toRoute(['/sparking/default/ticket-in', 'id' => $model->id]), ['class'=>'btn btn-info btn-sm', 'target' => '_blank']);
+                        },
+                        'myButtonPrintVoucher' => function($url, $model, $key) {     // render your custom button
+                            return (empty($model->check_out)) ? '' : Html::a('Ticket Salida', Url::toRoute(['/sparking/default/ticket-out', 'id' => $model->id]), ['class'=>'btn btn-info btn-sm', 'target' => '_blank']);
+                        },
+                        'myButtonOuting' => function($url, $model, $key) {     // render your custom button
+                            return (!empty($model->check_out)) ? '' : Html::a('Registrar Salida', Url::toRoute(['/sparking/default/salida-vehiculo', 'id' => $model->id]), ['class'=>'btn btn-warning btn-sm']);
+                        },
+                    ]
                 ],
             ];
             
@@ -107,6 +122,9 @@ $this->params['breadcrumbs'][] = $this->title;
             echo ExportMenu::widget([
                 'dataProvider' => $dataProvider,
                 'columns' => $gridColumns,
+                'dropdownOptions' => [
+                    'label' => 'Exportar',
+                ],
             ]);
             
             // You can choose to render your own GridView separately

@@ -33,24 +33,6 @@ class MovementsController extends Controller
         );
     }
 
-    /**
-     * Lists all Movements models.
-     *
-     * @return string
-     */
-    public function actionIndex()
-    {
-        $searchModel = new MovementsSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-		// $dataProvider->pagination->pageSize = 100000;
-		$dataProvider->sort->defaultOrder = ['id' => SORT_DESC];
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config);

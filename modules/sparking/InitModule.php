@@ -112,6 +112,11 @@ class InitModule extends \yii\base\Module
                     // 'linkOptions' => ['class' => 'nav-link link-body-emphasis px-2'],
                 ],
                 [
+                    'label' => '<i class="bi bi-people"></i> Miembros',
+                    'url' => ['/sparking/plan/index'],
+                    // 'linkOptions' => ['class' => 'nav-link link-body-emphasis px-2'],
+                ],
+                [
                     'label' => '<i class="bi bi-people"></i> Membresias',
                     'url' => ['/sparking/membership/index'],
                     // 'linkOptions' => ['class' => 'nav-link link-body-emphasis px-2'],

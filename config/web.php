@@ -12,6 +12,7 @@ $config = [
     'sourceLanguage' => 'es-CO',
     'basePath' => dirname(__DIR__),
     'modules' => [
+        'gridview' => ['class' => 'kartik\grid\Module'],
         'hello' => 'app\modules\hello\HelloModule',
         'sparking' => [
             'class' => 'app\modules\sparking\InitModule',

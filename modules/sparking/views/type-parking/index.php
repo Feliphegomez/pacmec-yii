@@ -9,7 +9,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Tipos de estacionamientos';
+$this->title = 'Tipos de estacionamientos - Admin';
 $this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
