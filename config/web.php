@@ -10,6 +10,7 @@ $config = [
     'language' => 'es-CO',
     // set source language to be English
     'sourceLanguage' => 'es-CO',
+    'timeZone' => 'America/Bogota',
     'basePath' => dirname(__DIR__),
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
@@ -70,6 +71,10 @@ $config = [
             'showScriptName' => false,
             'rules' => [
             ],
+        ],
+        'formatter' => [
+          'timeZone' => 'UTC',
+          'locale' => 'es-CO',
         ],
     ],
     'params' => $params,

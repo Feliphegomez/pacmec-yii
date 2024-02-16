@@ -420,7 +420,7 @@ class DefaultController extends Controller
 
     public function actionTicketIn($id) 
     {
-        $this->layout = 'empty';
+        $this->layout = '/empty';
 
         if (($model = Movement::findOne(['id' => $id])) !== null) {
             return $this->render('ticket', [
@@ -433,7 +433,7 @@ class DefaultController extends Controller
 
     public function actionTicketOut($id) 
     {
-        $this->layout = 'empty';
+        $this->layout = '/empty';
         if (($model = Movement::findOne(['id' => $id])) !== null) {
             return $this->render('voucher', [
                 'outId' => $id,

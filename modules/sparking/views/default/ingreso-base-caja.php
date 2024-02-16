@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </p>
         <?php endif ?>
         <?php $form = ActiveForm::begin(['id' => 'base-caja-form']); ?>
-            <?= $form->field($model, 'plate')->textInput(['readonly' => 'on'])->label("Anotacion") ?>
+            <?= $form->field($model, 'plate')->hiddenInput(['readonly' => 'on'])->label(false) ?>
             <?php // $form->field($model, 'type_id') ?>
             <?= $form->field($model, 'payment_value')->textInput(['autofocus' => true])->label("Dinero en caja") ?>
             <div class="form-group">

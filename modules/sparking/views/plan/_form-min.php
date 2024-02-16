@@ -71,7 +71,7 @@ use app\modules\sparking\models\TypeParking;
                 'class' => 'form-control',
                 'prompt'=>'-Seleccione la membresia/plan',
                 'onchange'=>  '
-                    let indexSelec = $("#plans-membership_id").val(); 
+                    let indexSelec = $("#plan-membership_id").val(); 
                     let namesList = '.json_encode($membershipNamesList).'; 
                     let pricesList = '.json_encode($membershipPricesList).'; 
                     let durationList = '.json_encode($membershipDurationList).'; 
@@ -96,9 +96,9 @@ use app\modules\sparking\models\TypeParking;
                     console.log(date_start.toISOString().slice(0, 19).replace("T", " "))
                     console.log(date_end.toISOString().slice(0, 19).replace("T", " "))
                     
-                    $("#plans-date_start").val(date_start.toISOString().slice(0, 19).replace("T", " "));
-                    $("#plans-date_end").val(date_end.toISOString().slice(0, 19).replace("T", " "));
-                    $("#plans-payment_value").val((pricesList[indexSelec] ?? 0));
+                    $("#plan-date_start").val(date_start.toISOString().slice(0, 19).replace("T", " "));
+                    $("#plan-date_end").val(date_end.toISOString().slice(0, 19).replace("T", " "));
+                    $("#plan-payment_value").val((pricesList[indexSelec] ?? 0));
                     $("#plan-name").text(namesList[indexSelec] ?? "Seleccione el plan");
                     $("#plan-duration").text(textDuration ?? "Seleccione el plan");
                     $("#plan-precio").text(pricesList[indexSelec] ?? "Seleccione el plan");

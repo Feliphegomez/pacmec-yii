@@ -27,9 +27,9 @@ $diferencia = $model->time_elapsed ?? (object) [];
         'method' => 'post',
         'fieldConfig' => [
             'template' => "<div class=\"form-floating pb-3\">{input}\n{label}\n{error}</div>",
-            'labelOptions' => ['class' => ''],
-            'inputOptions' => ['class' => 'form-control'],
-            'errorOptions' => ['class' => 'col-lg-12 invalid-feedback'],
+            // 'labelOptions' => ['class' => ''],
+            // 'inputOptions' => ['class' => 'form-control'],
+            // 'errorOptions' => ['class' => 'col-lg-12 invalid-feedback'],
         ],
     ]); ?>
         <?php if (empty($model->id)) : ?>

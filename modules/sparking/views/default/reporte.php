@@ -42,7 +42,7 @@ foreach ($dataProvider->models as $m) {
                     ],
                     [
                         'label'=>'T. vehiculo',
-                        'filter'=>\yii\helpers\ArrayHelper::map(TypeParking::find()->andWhere('id > 1')->all(), 'id', 'name'),
+                        'filter'=>\yii\helpers\ArrayHelper::map(TypeParking::find()->all(), 'id', 'name'),
                         'attribute'=>'type_id',
                         'value'=>'type.name',
                     ],

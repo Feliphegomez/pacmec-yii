@@ -1,14 +1,14 @@
 <?php
 
-use app\models\Movements;
+use app\models\Movement;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var app\models\Movements $model */
-/** @var app\models\MovementsSearch $searchModel */
+/** @var app\models\Movement $model */
+/** @var app\models\MovementSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Salida de vehiculo';
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </p>
             <?php endif ?>
-            <?= $model ? $this->render('/movements/_form', [
+            <?= $model ? $this->render('/movement/_form-auto', [
                 'model' => $model,
                 'payment_time' => $payment_time,
             ]) : GridView::widget([
