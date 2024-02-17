@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
         // 'action' => ['site/salida-vehiculo'],
         'method' => 'get',
         'options' => [
-            // 'class' => 'p-4 p-md-4 border rounded-3 bg-body-tertiary',
+            // 'class' => 'p-0 p-md-4 border rounded-3 bg-light',
         ],
     ]); ?>
     <div class="row p-3">

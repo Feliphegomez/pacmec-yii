@@ -1,5 +1,6 @@
 <?php
 
+use app\modules\sparking\helpers\Badge;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -21,14 +22,41 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'plate',
-            'type_id',
-            'check_in',
-            'check_in_user_id',
-            'check_out',
-            'check_out_user_id',
-            // 'time_elapsed:datetime',
-            'payment_value',
+            [
+                'label'=>'Placa',
+                'value'=>$model->plate,
+            ],
+            [
+                'label'=>'T. vehiculo',
+                'value'=>$model->type->name,
+            ],
+            [
+                'label'=>'Fecha de Ingreso',
+                'value'=>$model->check_in,
+            ],
+            [
+                'label'=>'Ingreso por',
+                'value'=>$model->checkInUser->username ?? 'Desconocido',
+            ],
+            [
+                'label'=>'Fecha de Salida',
+                'value'=>$model->check_out ?? 'Pendiente',
+            ],
+            [
+                'label'=>'Salida por',
+                'value'=>(empty($model->check_out_user_id)) ? 'Pendiente' : (empty($model->checkOutUser) ? 'Desconocido' : $model->checkOutUser->username),
+            ],
+            [
+                'label'=>'Tiempo transcurrido',
+                'format'=>'html',
+                'value'=>Badge::JsonToString($model->time_elapsed),
+            ],
+            [
+                'label'=>'Cobro',
+                'value'=> function($model) {
+                    return (!empty($model->payment_value)) ? Yii::$app->formatter->asCurrency($model->payment_value, 'COP') : 'Pendiente';
+                },
+            ],
         ],
     ]) ?>
     </div>

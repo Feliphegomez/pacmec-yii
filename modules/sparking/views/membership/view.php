@@ -1,5 +1,6 @@
 <?php
 
+use app\modules\sparking\helpers\Badge;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -33,10 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'type_id',
                 'price',
                 [
-                    'label' => 'Duracion',
-                    'value' => function($model) {
-                        return json_encode($model->duration);
-                    },
+                    'label'=>'Duracion',
+                    'format'=>'html',
+                    'value'=>Badge::JsonToString($model->duration),
                 ],
             ],
         ]) ?>

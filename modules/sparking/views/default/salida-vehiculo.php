@@ -17,15 +17,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container">
     <div class="row align-items-center g-lg-5 py-3">
-        <div class="col-lg-8 text-center mx-auto text-lg-start">
+        <div class="<?= (empty($model)) ? 'col-lg-5' : 'col-lg-12' ?> text-center mx-auto text-lg-start">
             <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3 text-center">Salida de Vehículo</h1>
             <?php if (empty($model)) : ?>
-                <p class="text-center fs-4">Utilice el buscador para los encontrar el vejículo, la informacion se visualizara despues de esto.</p>
+                <p class="text-center">Utilice el buscador para los encontrar el vejículo, la informacion se visualizara despues de esto.</p>
                 <?= $this->render('/movement/_search-min', [
                     'model' => $searchModel,
                 ]) ?>
             <?php else : ?>
-                <p class="text-center fs-4">Confirme los datos del vehiculo antes de registrar la salida.</p>
+                <p class="text-center fs-5">Confirme los datos del vehiculo antes de registrar la salida.</p>
             <?php endif; ?>
         </div>
 

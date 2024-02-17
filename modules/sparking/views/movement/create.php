@@ -5,8 +5,9 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\modules\sparking\models\Movement $model */
 
-$this->title = 'Create Movement';
-$this->params['breadcrumbs'][] = ['label' => 'Movements', 'url' => ['index']];
+$this->title = 'Creacion manual';
+$this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default']];
+$this->params['breadcrumbs'][] = ['label' => 'Movimientos - Admin', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="movement-create">

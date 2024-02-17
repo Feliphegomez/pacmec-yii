@@ -48,21 +48,23 @@ class MovementController extends Controller
     public function actionIndex()
     {
         $searchModel = new MovementSearch();
-        $dataProvider = new ActiveDataProvider([
-            'query' => Movement::find(),
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-        ]);
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => Movement::find(),
+        //     'pagination' => [
+        //         'pageSize' => 5
+        //     ],
+        //     'sort' => [
+        //         'defaultOrder' => [
+        //             'id' => SORT_DESC,
+        //         ]
+        //     ],
+        // ]);
+
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

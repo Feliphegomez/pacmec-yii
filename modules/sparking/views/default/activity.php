@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format' => 'html',
                     'attribute'=>'payment_value',
                     'value'=> function($model) {
-                        return (!empty($model->payment_value)) ? Yii::$app->formatter->asCurrency($model->payment_value, 'COP') : 'Pdte';
+                        return (!empty($model->payment_value)) ? Yii::$app->formatter->asCurrency($model->payment_value, 'COP') : 'Pendiente';
                     },
                     // 'value'=>Yii::$app->numberFormatter->formatCurrency(, "COP"),
                 ],

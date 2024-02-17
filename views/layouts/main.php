@@ -102,12 +102,12 @@ NavBar::end();
     </div>
 
     <?php 
-        if (!empty(Yii::$app->params['menus']['top_secondary'])) {
+        if (!empty(Yii::$app->params['menus']['top_secondary']) || Yii::$app->user->isGuest) {
             NavBar::begin([
                 // 'brandLabel' => Yii::$app->name,
                 // 'brandUrl' => Yii::$app->homeUrl,
-                'options' => ['class' => 'navbar navbar-expand-sm navbar-dark bg-dark'],
-                'innerContainerOptions' => ['class' => 'container'],
+                'options' => ['class' => 'navbar navbar-expand-md navbar-dark bg-dark'],
+                'innerContainerOptions' => ['class' => 'container-fluid'],
                 'brandOptions' => ['class' => 'bi me-2'],
             ]);
                 echo Nav::widget([

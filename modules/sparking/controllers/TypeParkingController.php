@@ -4,6 +4,7 @@ namespace app\modules\sparking\controllers;
 
 use app\modules\sparking\models\TypeParking;
 use app\modules\sparking\models\Menus;
+use app\modules\sparking\models\TypeParkingSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -46,6 +47,14 @@ class TypeParkingController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new TypeParkingSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => TypeParking::find(),
             /*

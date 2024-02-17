@@ -42,6 +42,10 @@ return [
                 'url' => ['/site/profile'],
             ],
             [
+                'label' => 'Cambiar contraseña',
+                'url' => ['/site/my-password'],
+            ],
+            [
                 'label' => 'Ajustes',
                 'url' => ['/site/settings'],
             ],

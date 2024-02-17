@@ -6,9 +6,9 @@ use yii\helpers\Url;
 /** @var yii\web\View $this */
 /** @var app\models\Movement $model */
 
-$this->title = 'Ingreso plan de vehiculo';
+$this->title = 'Nuevo miembro';
 $this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default']];
-$this->params['breadcrumbs'][] = ['label' => 'Miembros', 'url' => ['/sparking/members']];
+// $this->params['breadcrumbs'][] = ['label' => 'Miembros', 'url' => ['/sparking/members']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container">

@@ -6,12 +6,8 @@ use app\modules\sparking\helpers\Badge;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
-// use yii\grid\GridView;
 use kartik\export\ExportMenu;
-
-// on your view layout file
 use kartik\icons\FontAwesomeAsset;
-FontAwesomeAsset::register($this);
 
 /** @var yii\web\View $this */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -19,6 +15,8 @@ FontAwesomeAsset::register($this);
 $this->title = 'Movimientos - Admin';
 $this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default']];
 $this->params['breadcrumbs'][] = $this->title;
+
+FontAwesomeAsset::register($this);
 ?>
 <div class="movement-index">
     <div class="container">
@@ -28,6 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 if (Yii::$app->user->can('admin')) {
                     echo Html::a('Crear actividad', ['/sparking/movement/create'], ['class' => 'btn btn-success']);
                 }
+            ?>
+            <?php 
                 if (Yii::$app->user->can('cashier')) {
                     echo Html::a('Ingreso normal', ['/sparking/default/ingreso-vehiculo'], ['class' => 'btn btn-success']);
                 }
@@ -36,10 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php 
             $gridColumns = [
                 // ['class' => 'yii\grid\SerialColumn'],
-                // 'id',
-                ['class' => 'yii\grid\SerialColumn'],
-                
-                // 'id',
+                'id',
                 [
                     'label'=>'Placa',
                     'attribute'=>'plate',
@@ -96,7 +93,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     // 'value'=>Yii::$app->numberFormatter->formatCurrency(, "COP"),
                 ],
                 [
-                    'class' => ActionColumn::className(),
+                    'class' => ActionColumn::class,
+                    // 'buttonOptions' => [
+                    //     'class' => 'btn btn-sm btn-primary',
+                    // ],
                     'urlCreator' => function ($action, Movement $model, $key, $index, $column) {
                         return Url::toRoute(["/sparking/movement/{$action}", 'id' => $model->id]);
                     }

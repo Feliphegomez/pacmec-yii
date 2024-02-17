@@ -8,7 +8,7 @@ use yii\helpers\Url;
 
 $this->title = 'Ingreso de vehiculo';
 $this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default']];
-$this->params['breadcrumbs'][] = ['label' => 'Actividad', 'url' => ['/sparking/default/activity']];
+// $this->params['breadcrumbs'][] = ['label' => 'Actividad', 'url' => ['/sparking/default/activity']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container">

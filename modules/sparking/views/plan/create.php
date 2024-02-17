@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = 'Creacion manual';
 $this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default']];
-$this->params['breadcrumbs'][] = ['label' => 'Miembros', 'url' => ['/sparking/plan/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Miembros - Admin', 'url' => ['/sparking/plan/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="plan-create">

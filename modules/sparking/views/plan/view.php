@@ -6,9 +6,9 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\modules\sparking\models\Plan $model */
 
-$this->title = $model->id;
+$this->title = "Miembro #{$model->id} - Placa: {$model->plate}";
 $this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default']];
-$this->params['breadcrumbs'][] = ['label' => 'Miembros', 'url' => ['/sparking/plan/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Miembros - Admin', 'url' => ['/sparking/plan/index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
+                    'confirm' => '¿Estás seguro de que quieres eliminar este artículo?',
                     'method' => 'post',
                 ],
             ]) ?>

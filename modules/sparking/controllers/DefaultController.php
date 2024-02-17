@@ -5,21 +5,15 @@ namespace app\modules\sparking\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\Response;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\SignupForm;
-use app\models\ContactForm;
 use app\modules\sparking\models\Movement;
 use app\modules\sparking\models\MovementsSearch;
 use app\modules\sparking\models\Membership;
-use app\modules\sparking\models\Plans;
 use app\modules\sparking\models\Menus;
 use app\modules\sparking\models\MovementSearch;
 use app\modules\sparking\models\Plan;
 use app\modules\sparking\models\PlanSearch;
-use Exception;
 use yii\data\ActiveDataProvider;
 
 class DefaultController extends Controller
@@ -89,24 +83,19 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Membership::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
-
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
         ]);
-        // return $this->render('index');
+    }
+
+    /**
+     * Displays homepage admin.
+     *
+     * @return string
+     */
+    public function actionAdmin()
+    {
+        return $this->render('index-admin', [
+        ]);
     }
 
     public function actionIngresoVehiculo($addId=null)

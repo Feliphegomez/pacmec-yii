@@ -1,6 +1,8 @@
 <?php
 
+use app\modules\sparking\models\Membership;
 use app\modules\sparking\models\Plan;
+use app\modules\sparking\models\TypeParking;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -18,19 +20,37 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="container">
         <h1><?= Html::encode($this->title) ?></h1>
         <p>
-            <?= Html::a('Creacion manual', ['/sparking/plan/create'], ['class' => 'btn btn-success']) ?>
-            <?= Html::a('Creacion normal', ['/sparking/default/ingreso-plan'], ['class' => 'btn btn-success']) ?>
+            <?php 
+                if (Yii::$app->user->can('admin')) {
+                    echo Html::a('Creacion manual', ['/sparking/plan/create'], ['class' => 'btn btn-success']);
+                }
+            ?>
+            <?php 
+                if (Yii::$app->user->can('cashier')) {
+                    echo Html::a('Creacion normal', ['/sparking/default/ingreso-plan'], ['class' => 'btn btn-success']);
+                }
+            ?>
         </p>
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
+                // ['class' => 'yii\grid\SerialColumn'],
                 'id',
                 'plate',
-                'type_id',
-                'membership_id',
+                [
+                    'label'=>'T. vehiculo',
+                    'filter'=>\yii\helpers\ArrayHelper::map(TypeParking::find()->andWhere('id > 1')->all(), 'id', 'name'),
+                    'attribute'=>'type_id',
+                    'value'=>'type.name',
+                ],
+                [
+                    'label'=>'T. vehiculo',
+                    'filter'=>\yii\helpers\ArrayHelper::map(Membership::find()->andWhere('id > 1')->all(), 'id', 'name'),
+                    'attribute'=>'membership_id',
+                    'value'=>'membership.name',
+                ],
                 'date_start',
                 'date_end',
                 // 'payment_value',
@@ -45,6 +65,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'class' => ActionColumn::className(),
+                    // 'buttonOptions' => [
+                    //     'class' => 'btn btn-sm btn-primary',
+                    // ],
                     'urlCreator' => function ($action, Plan $model, $key, $index, $column) {
                         return Url::toRoute([$action, 'id' => $model->id]);
                     }

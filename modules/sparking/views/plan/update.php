@@ -5,11 +5,11 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\modules\sparking\models\Plan $model */
 
-$this->title = 'Update Plan: ' . $model->id;
+$this->title = "Miembro #{$model->id} - Placa: {$model->plate}";
 $this->params['breadcrumbs'][] = ['label' => 'SParking', 'url' => ['/sparking/default']];
 $this->params['breadcrumbs'][] = ['label' => 'Miembros', 'url' => ['/sparking/plan/index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => "Miembro #{$model->id} - Placa: {$model->plate}", 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="plan-update">
     <div class="container">
