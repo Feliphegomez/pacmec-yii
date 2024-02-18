@@ -27,13 +27,8 @@ class UsersController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout'],
+                'only' => ['index', 'create', 'update', 'delete'],
                 'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
                     [
                         'allow' => true,
                         'actions' => ['index', 'create', 'update', 'delete'],

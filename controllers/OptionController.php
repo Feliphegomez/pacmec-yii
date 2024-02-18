@@ -1,93 +1,54 @@
 <?php
 
-namespace app\modules\sparking\controllers;
+namespace app\controllers;
 
-use app\modules\sparking\models\TypeParking;
-use app\modules\sparking\models\Menus;
-use app\modules\sparking\models\TypeParkingSearch;
-use yii\filters\AccessControl;
-use yii\data\ActiveDataProvider;
+use app\models\Option;
+use app\models\OptionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TypeParkingController implements the CRUD actions for TypeParking model.
+ * OptionController implements the CRUD actions for Option model.
  */
-class TypeParkingController extends Controller
+class OptionController extends Controller
 {
     /**
      * @inheritDoc
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['index', 'create', 'update', 'delete'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['index', 'create', 'update', 'delete'],
-                        'roles' => ['admin'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
                     ],
                 ],
-                'denyCallback' => function ($rule, $action) {
-                    throw new NotFoundHttpException('No tienes los suficientes permisos para acceder a esta página.', 403);
-                }
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-
-    public function __construct($id, $module, $config)
-    {
-        parent::__construct($id, $module, $config ?? []);
-        
-        Menus::addMenuParking();
+            ]
+        );
     }
 
     /**
-     * Lists all TypeParking models.
+     * Lists all Option models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new TypeParkingSearch();
+        $searchModel = new OptionSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => TypeParking::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
     }
 
     /**
-     * Displays a single TypeParking model.
+     * Displays a single Option model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -100,13 +61,13 @@ class TypeParkingController extends Controller
     }
 
     /**
-     * Creates a new TypeParking model.
+     * Creates a new Option model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new TypeParking();
+        $model = new Option();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -122,7 +83,7 @@ class TypeParkingController extends Controller
     }
 
     /**
-     * Updates an existing TypeParking model.
+     * Updates an existing Option model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -142,7 +103,7 @@ class TypeParkingController extends Controller
     }
 
     /**
-     * Deletes an existing TypeParking model.
+     * Deletes an existing Option model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -156,15 +117,15 @@ class TypeParkingController extends Controller
     }
 
     /**
-     * Finds the TypeParking model based on its primary key value.
+     * Finds the Option model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return TypeParking the loaded model
+     * @return Option the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = TypeParking::findOne(['id' => $id])) !== null) {
+        if (($model = Option::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

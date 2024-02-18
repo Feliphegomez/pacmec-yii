@@ -39,6 +39,7 @@ class MovementController extends Controller
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
+                    'delete' => ['post'],
                 ],
             ],
         ];

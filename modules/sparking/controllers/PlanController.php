@@ -38,6 +38,7 @@ class PlanController extends Controller
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
+                    'delete' => ['post'],
                 ],
             ],
         ];

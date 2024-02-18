@@ -15,12 +15,12 @@ $config = [
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
         // 'hello' => 'app\modules\hello\HelloModule',
-        'sparking' => 'app\modules\sparking\InitModule',
+        // 'sparking' => 'app\modules\sparking\InitModule',
     ],
     'bootstrap' => [
         'log',
         // 'hello',
-        'sparking',
+        // 'sparking',
     ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',

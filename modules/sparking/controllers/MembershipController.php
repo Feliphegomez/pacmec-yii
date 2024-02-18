@@ -38,6 +38,7 @@ class MembershipController extends Controller
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
+                    'delete' => ['post'],
                 ],
             ],
         ];

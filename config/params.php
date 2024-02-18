@@ -55,6 +55,14 @@ return [
                 'label' => '<i class="bi bi-people"></i> Usuarios',
                 'url' => ['/users/index'],
             ],
+            [
+                'label' => '<i class="bi bi-people"></i> Roles y permisos',
+                'url' => ['/roles/index'],
+            ],
+            [
+                'label' => '<i class="bi bi-people"></i> Opciones',
+                'url' => ['/option/index'],
+            ],
         ],
     ],
 ];
