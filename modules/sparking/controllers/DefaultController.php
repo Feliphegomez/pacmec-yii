@@ -369,9 +369,6 @@ class DefaultController extends Controller
             'dataProvider' => $dataProvider,
         ]);
 
-
-
-
         $searchModel = new MovementSearch();
         $diaSemana = date("w");
         # Calcular el tiempo (no la fecha) de cuándo fue el inicio de semana
@@ -466,7 +463,8 @@ class DefaultController extends Controller
                             $model_movement->check_in_user_id = Yii::$app->user->identity->id;
                             $model_movement->check_out = date('Y-m-d H:i:s');
                             $model_movement->check_out_user_id = Yii::$app->user->identity->id;
-                            $model_movement->time_elapsed = json_decode('{"d": 0, "f": 0, "h": 0, "i": 0, "m": 0, "s": 7, "y": 0}');
+                            // $model_movement->time_elapsed = json_decode('{"d": 0, "f": 0, "h": 0, "i": 0, "m": 0, "s": 7, "y": 0}');
+                            $model_movement->time_elapsed = null;
                             $model_movement->payment_value = $model->payment_value;
                             
                             if ($model_movement->save()) {
@@ -539,7 +537,8 @@ class DefaultController extends Controller
             if ($model->load($this->request->post())) {
                 foreach($productos as $prod) {
                     if ($prod['id'] == $model->plate) {
-                        $model->time_elapsed = json_decode('{"d": 0, "f": 0, "h": 0, "i": 0, "m": 0, "s": 7, "y": 0}');
+                        // $model->time_elapsed = json_decode('{"d": 0, "f": 0, "h": 0, "i": 0, "m": 0, "s": 7, "y": 0}');
+                        $model->time_elapsed = null;
                         $model->payment_value = $prod['price'];
                         $model->plate = $prod['text'];
                     }

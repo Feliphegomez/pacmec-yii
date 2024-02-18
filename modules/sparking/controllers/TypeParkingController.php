@@ -5,6 +5,7 @@ namespace app\modules\sparking\controllers;
 use app\modules\sparking\models\TypeParking;
 use app\modules\sparking\models\Menus;
 use app\modules\sparking\models\TypeParkingSearch;
+use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -20,17 +21,27 @@ class TypeParkingController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['index', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'create', 'update', 'delete'],
+                        'roles' => ['admin'],
                     ],
                 ],
-            ]
-        );
+                'denyCallback' => function ($rule, $action) {
+                    throw new NotFoundHttpException('No tienes los suficientes permisos para acceder a esta página.', 403);
+                }
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                ],
+            ],
+        ];
     }
 
     public function __construct($id, $module, $config)

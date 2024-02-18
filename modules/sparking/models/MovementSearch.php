@@ -86,6 +86,7 @@ class MovementSearch extends Movement
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            // 'plate' => $this->plate,
             'type_id' => $this->type_id,
             'check_in' => $this->check_in,
             'check_in_user_id' => $this->check_in_user_id,
@@ -94,7 +95,7 @@ class MovementSearch extends Movement
             'payment_value' => $this->payment_value,
         ]);
 
-        // $query->andFilterWhere(['like', 'plate', $this->plate])
+        $query->andFilterWhere(['like', 'plate', $this->plate]);
         //     ->andFilterWhere(['like', 'time_elapsed', $this->time_elapsed]);
 
 
