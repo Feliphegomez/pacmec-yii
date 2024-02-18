@@ -14,12 +14,12 @@ $config = [
     'basePath' => dirname(__DIR__),
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
-        'hello' => 'app\modules\hello\HelloModule',
+        // 'hello' => 'app\modules\hello\HelloModule',
         'sparking' => 'app\modules\sparking\InitModule',
     ],
     'bootstrap' => [
         'log',
-        'hello',
+        // 'hello',
         'sparking',
     ],
     'aliases' => [

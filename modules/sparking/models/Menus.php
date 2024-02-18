@@ -94,22 +94,34 @@ class Menus {
                         'label' => 'Dia',
                         'url' => ['/sparking/default/reporte-dia'],
                         'visible' => Yii::$app->user->can('admin'),
+                        'options' => [
+                            'title' => 'Revise los movimientos del dia.'
+                        ],
                     ],
                     [
                         'label' => 'Semana',
                         'url' => ['/sparking/default/reporte-semana'],
                         'visible' => Yii::$app->user->can('admin'),
+                        'options' => [
+                            'title' => 'Revise los movimientos de la semana.'
+                        ],
                     ],
                     [
                         'label' => 'Mes',
                         'url' => ['/sparking/default/reporte-mes'],
                         'visible' => Yii::$app->user->can('admin'),
+                        'options' => [
+                            'title' => 'Revise los movimientos del mes.'
+                        ],
                     ],
                     '<hr class="dropdown-divider">',
                     [
-                        'label' => 'Personalizar',
+                        'label' => 'Personalizado',
                         'url' => ['/sparking/default/reporte'],
                         'visible' => Yii::$app->user->can('admin'),
+                        'options' => [
+                            'title' => 'Revise los movimientos segun los filtros que necesita.'
+                        ],
                     ],
                 ],
             ],
@@ -127,50 +139,50 @@ class Menus {
             //     ],
             // ]
             array_merge([
-                [
-                    'label' => '<i class="bi bi-house-fill d-none d-md-block mx-auto mb-1" style="font-size: 1.5rem;text-align:center;"></i> Inicio',
-                    'url' => ['/sparking/default/index'],
-                    'visible' => !Yii::$app->user->isGuest,
-                ],
-                [
-                    'label' => '<i class="bi bi-person-bounding-box d-none d-md-block mx-auto mb-1" style="font-size: 1.5rem;text-align:center;"></i> Admin',
-                    'url' => ['/sparking/default/admin'],
-                    'visible' => Yii::$app->user->can('admin'),
-                ],
+                // [
+                //     'label' => '<i class="bi bi-house-fill d-none d-md-block mx-auto mb-1" style="font-size: 1.5rem;text-align:center;"></i> Inicio',
+                //     'url' => ['/sparking/default/index'],
+                //     'visible' => !Yii::$app->user->isGuest,
+                // ],
             ], self::getMenuPrimary(), self::getMenuPrimaryExtra(), (Yii::$app->user->can('admin')) ? self::getMenuAdmin() : [])
         );
         return true;
     }
 
-    public static function createGridIcon($item) 
+    public static function createGridIcons($items = []) 
     {
-        $label = $item['label'] ?? (is_string($item) ? $item : json_encode($item));
+        $r = '';
+        foreach ($items as $item) {
+            $r .= self::createGridIcon($item);
+        }
+        return $r;
+    }
+
+    public static function createGridIcon($item, $parent = '') 
+    {
+        $label = ($item['label'] ?? (is_string($item) ? $item : json_encode($item)));
         $title = $item['options']['title'] ?? (is_string($item) ? $item : '');
         $url = (isset($item['url'])) ? Url::toRoute($item['url']) : '#';
 
         $r = '';
 
-        if (isset($item['items'])) {
+        if (is_string($item)) {
+            $r .= $item;
+        }
+        else if (isset($item['items'])) {
             foreach ($item['items'] as $b) {
-                // $r += self::createGridIcon($b);
-                // $r += json_encode($b);
+                $r .= self::createGridIcon($b, "{$label} - ");
             }
-            $r += json_encode($item['items']);
         } else {
-            if (is_string($item)) {
-                $r += $item;
-            }
-            else {
-                $r = '<div class="col-sm-3 my-2 mx-auto">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">'.$label.'</h5>
-                            <p class="card-text">'.$title.'</p>
-                            <a href="'.$url.'" class="btn btn-outline-primary">Continuar</a>
-                        </div>
+            $r = '<div class="col-sm-3 my-2 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">' . "{$parent}" . $label.'</h5>
+                        <p class="card-text">'.$title.'</p>
+                        <a href="'.$url.'" class="btn btn-outline-primary">Continuar</a>
                     </div>
-                </div>';
-            }
+                </div>
+            </div>';
         }
 
         return $r;

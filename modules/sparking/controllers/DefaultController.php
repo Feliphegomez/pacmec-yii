@@ -83,19 +83,13 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index', [
-        ]);
-    }
-
-    /**
-     * Displays homepage admin.
-     *
-     * @return string
-     */
-    public function actionAdmin()
-    {
-        return $this->render('index-admin', [
-        ]);
+        if (Yii::$app->user->can('admin')) {
+            return $this->render('index-admin', [
+            ]);
+        } else {
+            return $this->render('index', [
+            ]);
+        }
     }
 
     public function actionIngresoVehiculo($addId=null)

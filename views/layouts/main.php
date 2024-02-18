@@ -32,24 +32,27 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 
-<?php
-NavBar::begin([
-    // 'brandLabel' => Yii::$app->name,
-    // 'brandUrl' => Yii::$app->homeUrl,
-    'options' => ['class' => 'navbar navbar-expand-sm navbar-light bg-light'],
-    'innerContainerOptions' => ['class' => 'container-fluid'],
-]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav me-auto mb-2 mb-sm-0'],
-        'items' => Yii::$app->params['menus']['top_left'],
-        'encodeLabels' => false,
+<?php 
+if (!empty(Yii::$app->params['menus']['top_left']) || !empty(Yii::$app->params['menus']['top_right'])) {
+
+    NavBar::begin([
+        // 'brandLabel' => Yii::$app->name,
+        // 'brandUrl' => Yii::$app->homeUrl,
+        'options' => ['class' => 'navbar navbar-expand-sm navbar-light bg-light'],
+        'innerContainerOptions' => ['class' => 'container-fluid'],
     ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav me-right mb-2 mb-sm-0'],
-        'items' => Yii::$app->params['menus']['top_right'],
-        'encodeLabels' => false,
-    ]);
-NavBar::end();
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav me-auto mb-2 mb-sm-0'],
+            'items' => Yii::$app->params['menus']['top_left'],
+            'encodeLabels' => false,
+        ]);
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav me-right mb-2 mb-sm-0'],
+            'items' => Yii::$app->params['menus']['top_right'],
+            'encodeLabels' => false,
+        ]);
+    NavBar::end();
+}
 ?>
 <header class="px-0 border-bottom"> 
     <div class="container-fluid px-3">

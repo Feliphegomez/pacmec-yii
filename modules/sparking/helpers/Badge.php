@@ -5,7 +5,6 @@ class Badge {
     public static function JsonToString($time_elapsed, $color='info') 
     {
         $r = "- -- -";
-        
         if (is_object($time_elapsed)) {
             $r = ($time_elapsed->y>0 ? "<span class=\"badge bg-{$color} rounded-pill me-1\">{$time_elapsed->y} año(s) </span>" : '') 
                 . ($time_elapsed->m>0 ? "<span class=\"badge bg-{$color} rounded-pill me-1\">{$time_elapsed->m} mes(es) </span>" : '') 
@@ -24,7 +23,11 @@ class Badge {
                 . ($time_elapsed['f']>0 ? "<span class=\"badge bg-{$color} rounded-pill me-1\">{$time_elapsed['f']} milisegundo(s) </span>" : '');
         }
         else {
-            if (!empty($time_elapsed)) $r = json_encode($time_elapsed);
+            $json = json_decode($time_elapsed);
+            if (isset($json->f)) {
+                return self::JsonToString($json);
+            }
+            if (!empty($time_elapsed)) $r = ($time_elapsed);
         }
         return $r;
     }
